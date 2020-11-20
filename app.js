@@ -78,26 +78,9 @@ cronByDays.scheduleJob('10 1 * * *', function(){
 });
 
 
-
-
-
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT);
 // [END gae_node_request_example]
 
 module.exports = app;
-
-// var cron = require('node-schedule');
-// var rule = new cron.RecurrenceRule();
-// rule.second = 5;
-// cron.scheduleJob(rule, function(){
-//     console.log(new Date(), 'The 5th second of the minute.');
-// });
-
-// var cron2 = require('node-schedule');
-// var rule2 = new cron2.RecurrenceRule();
-// rule2.second = 3;
-// cron2.scheduleJob(rule2, function(){
-//     console.log(new Date(), 'The 3th second of the minute.');
-// });
