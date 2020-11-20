@@ -17,8 +17,8 @@
 // [START gae_node_request_example]
 const express = require('express');
 const https = require('https');
-const cronByhours = require('node-schedule');
-const cronByDays = require('node-schedule');
+// const cronByhours = require('node-schedule');
+// const cronByDays = require('node-schedule');
 
 const option = {
   hostname: 'hasura.neonesia.net',
@@ -45,11 +45,8 @@ const dataByDays = JSON.stringify({
 });
 const app = express();
 
-app.get('/', (req, res) => {
+app.get('/', (req2, res) => {
   res.status(200).send('node test test test').end();
-});
-
-cronByhours.scheduleJob('35 * * * *', function(){
   const req = https.request(option, (res) => {
     console.log(new Date(), `statusCode: ${res.statusCode}`);
     res.on('dataByHours', (d)=>{
@@ -63,19 +60,33 @@ cronByhours.scheduleJob('35 * * * *', function(){
   req.end();
 });
 
-cronByDays.scheduleJob('10 1 * * *', function(){
-  const req = https.request(option, (res) => {
-    console.log(new Date(), `statusCode: ${res.statusCode}`);
-    res.on('dataByDays', (d)=>{
-      process.stdout.write(d);
-    })
-  });
-  req.on('error', (error) => {
-    console.error(new Date(), error)
-  });
-  req.write(dataByDays)
-  req.end();
-});
+// cronByhours.scheduleJob('35 * * * *', function(){
+//   const req = https.request(option, (res) => {
+//     console.log(new Date(), `statusCode: ${res.statusCode}`);
+//     res.on('dataByHours', (d)=>{
+//       process.stdout.write(d);
+//     })
+//   });
+//   req.on('error', (error) => {
+//     console.error(new Date(), error)
+//   });
+//   req.write(dataByHours)
+//   req.end();
+// });
+
+// cronByDays.scheduleJob('10 1 * * *', function(){
+//   const req = https.request(option, (res) => {
+//     console.log(new Date(), `statusCode: ${res.statusCode}`);
+//     res.on('dataByDays', (d)=>{
+//       process.stdout.write(d);
+//     })
+//   });
+//   req.on('error', (error) => {
+//     console.error(new Date(), error)
+//   });
+//   req.write(dataByDays)
+//   req.end();
+// });
 
 
 // Start the server
