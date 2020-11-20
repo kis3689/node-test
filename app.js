@@ -16,19 +16,74 @@
 
 // [START gae_node_request_example]
 const express = require('express');
+const https = require('https');
+const cronByhours = require('node-schedule');
+const cronByDays = require('node-schedule');
 
+const option = {
+  hostname: 'hasura.neonesia.net',
+  path: '/v1/query',
+  method: 'POST',
+  headers: {
+    'Content-type': 'application/json',
+    'x-hasura-admin-secret': 'neoN2si@Adm1n'
+  }
+}
+
+const dataByHours = JSON.stringify({
+  args: {
+      sql: "SELECT bank.transaction_report_by_hours();SELECT ticket.ticket_report_by_hours();"
+  },
+  type: "run_sql"
+});
+
+const dataByDays = JSON.stringify({
+  args: {
+    sql: "SELECT bank.transaction_report_by_days();SELECT ticket.ticket_report_by_days();"
+  },
+  type: "run_sql"
+});
 const app = express();
 
 app.get('/', (req, res) => {
   res.status(200).send('node test test test').end();
 });
 
+cronByhours.scheduleJob('35 * * * *', function(){
+  const req = https.request(option, (res) => {
+    console.log(new Date(), `statusCode: ${res.statusCode}`);
+    res.on('dataByHours', (d)=>{
+      process.stdout.write(d);
+    })
+  });
+  req.on('error', (error) => {
+    console.error(new Date(), error)
+  });
+  req.write(dataByHours)
+  req.end();
+});
+
+cronByDays.scheduleJob('10 1 * * *', function(){
+  const req = https.request(option, (res) => {
+    console.log(new Date(), `statusCode: ${res.statusCode}`);
+    res.on('dataByDays', (d)=>{
+      process.stdout.write(d);
+    })
+  });
+  req.on('error', (error) => {
+    console.error(new Date(), error)
+  });
+  req.write(dataByDays)
+  req.end();
+});
+
+
+
+
+
 // Start the server
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log('Press Ctrl+C to quit.');
-});
+app.listen(PORT);
 // [END gae_node_request_example]
 
 module.exports = app;
