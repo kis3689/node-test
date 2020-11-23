@@ -5,4 +5,4 @@ cron:
 
 - description: "days job"
   url: /days
-  schedule: every 24 hours
+  schedule: every day 00:05
