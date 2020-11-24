@@ -5,4 +5,5 @@ cron:
 
 - description: "days job"
   url: /days
-  schedule: every day 17:05
+  schedule: every day 09:20
+  timezone: Asia/Jakarta
