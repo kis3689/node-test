@@ -1,9 +1,1 @@
 cron:
-- description: "hours job"
-  url: /hours
-  schedule: every 30 mins
-
-- description: "days job"
-  url: /days
-  schedule: every day 00:05
-  timezone: Asia/Jakarta
